@@ -1,0 +1,3 @@
+add_executable(convert_hex_to_base64 convert_hex_to_base64.cpp)
+
+target_link_libraries(convert_hex_to_base64 gtest_main absl::strings)
