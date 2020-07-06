@@ -39,8 +39,5 @@ cmake-build-*/
 out/
 .idea/
 
-# Libraries
-lib/
-
 # Build
 build/
