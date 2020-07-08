@@ -4,15 +4,21 @@
 #include <cstdlib>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace cryptopals {
 
 struct SingleByteXorPlaintext {
   uint8_t key;
   std::string plain_text;
+  double score;
+  size_t pos;
 };
 
 SingleByteXorPlaintext DecodeSingleByteXorCipher(std::string_view cipher_text);
+
+SingleByteXorPlaintext DetectSingleByteXorCipher(
+    std::vector<std::string> cipher_texts);
 
 }  // namespace cryptopals
 

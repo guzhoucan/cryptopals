@@ -11,6 +11,9 @@ target_link_libraries(letter_freq PUBLIC absl::strings)
 add_library(single_byte_xor_cipher STATIC single_byte_xor_cipher.h
         single_byte_xor_cipher.cpp)
 target_link_libraries(single_byte_xor_cipher PUBLIC fixed_xor letter_freq)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/detect_single_byte_xor_cipher.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/detect_single_byte_xor_cipher.txt COPYONLY)
 add_executable(single_byte_xor_cipher_test single_byte_xor_cipher_test.cpp)
 target_link_libraries(single_byte_xor_cipher_test PRIVATE gtest_main
         letter_freq single_byte_xor_cipher)
