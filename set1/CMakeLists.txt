@@ -1,10 +1,13 @@
+# Challenge 1
 add_executable(convert_hex_to_base64 convert_hex_to_base64.cpp)
 target_link_libraries(convert_hex_to_base64 gtest_main absl::strings)
 
+# Challenge 2
 add_library(fixed_xor STATIC fixed_xor.h fixed_xor.cpp)
 add_executable(fixed_xor_test fixed_xor_test.cpp)
 target_link_libraries(fixed_xor_test PRIVATE gtest_main absl::strings fixed_xor)
 
+# Challenge 3 & 4
 add_library(letter_freq STATIC letter_frequency.h letter_frequency.cpp)
 target_link_libraries(letter_freq PUBLIC absl::strings)
 
@@ -17,3 +20,8 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/detect_single_byte_xor_cipher.txt
 add_executable(single_byte_xor_cipher_test single_byte_xor_cipher_test.cpp)
 target_link_libraries(single_byte_xor_cipher_test PRIVATE gtest_main
         letter_freq single_byte_xor_cipher)
+
+# Challenge 5
+add_library(repeat_key_xor STATIC repeat_key_xor.h repeat_key_xor.cpp)
+add_executable(repeat_key_xor_test repeat_key_xor_test.cpp)
+target_link_libraries(repeat_key_xor_test PRIVATE gtest_main absl::strings repeat_key_xor)
