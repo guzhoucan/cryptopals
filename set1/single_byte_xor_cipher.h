@@ -11,8 +11,8 @@ namespace cryptopals {
 struct SingleByteXorPlaintext {
   uint8_t key;
   std::string plain_text;
-  double score;
-  size_t pos;
+  double score;  // averaged score per character
+  size_t pos;    // only used in DetectSingleByteXorCipher
 };
 
 SingleByteXorPlaintext DecodeSingleByteXorCipher(std::string_view cipher_text);

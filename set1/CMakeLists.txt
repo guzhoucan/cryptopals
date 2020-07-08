@@ -21,7 +21,11 @@ add_executable(single_byte_xor_cipher_test single_byte_xor_cipher_test.cpp)
 target_link_libraries(single_byte_xor_cipher_test PRIVATE gtest_main
         letter_freq single_byte_xor_cipher)
 
-# Challenge 5
+# Challenge 5 & 6
 add_library(repeat_key_xor STATIC repeat_key_xor.h repeat_key_xor.cpp)
+target_link_libraries(repeat_key_xor PUBLIC single_byte_xor_cipher)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/break_repeat_key_xor.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/break_repeat_key_xor.txt COPYONLY)
 add_executable(repeat_key_xor_test repeat_key_xor_test.cpp)
 target_link_libraries(repeat_key_xor_test PRIVATE gtest_main absl::strings repeat_key_xor)
