@@ -10,15 +10,15 @@ namespace {
 
 TEST(RepeatKeyXorEncode, Test) {
   std::string key = "ICE";
-  std::string plain_text =
+  std::string plaintext =
       "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a "
       "cymbal";
-  std::string cipher_text = RepeatKeyXorEncode(plain_text, key);
+  std::string ciphertext = RepeatKeyXorEncode(plaintext, key);
   EXPECT_EQ(
       "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765"
       "272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27"
       "282f",
-      absl::BytesToHexString(cipher_text));
+      absl::BytesToHexString(ciphertext));
 }
 
 TEST(GetHammingDistance, Test) {
@@ -33,14 +33,14 @@ TEST(BreakRepeatKeyXor, Test) {
   ASSERT_TRUE(file.is_open());
   std::stringstream ss;
   ss << file.rdbuf();
-  std::string cipher_text_base64 = ss.str();
+  std::string ciphertext_base64 = ss.str();
   file.close();
-  std::string cipher_text;
-  ASSERT_TRUE(absl::Base64Unescape(cipher_text_base64, &cipher_text));
+  std::string ciphertext;
+  ASSERT_TRUE(absl::Base64Unescape(ciphertext_base64, &ciphertext));
 
-  BreakRepeatKeyXorOutput output = BreakRepeatKeyXor(cipher_text);
+  BreakRepeatKeyXorOutput output = BreakRepeatKeyXor(ciphertext);
   EXPECT_EQ("I'm back and I'm ringin' the bell ",
-            output.plain_text.substr(0, output.plain_text.find('\n')));
+            output.plaintext.substr(0, output.plaintext.find('\n')));
   EXPECT_EQ("Terminator X: Bring the noise", output.key);
 }
 

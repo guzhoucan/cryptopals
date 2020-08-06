@@ -32,7 +32,7 @@ TEST(DecryptAesInEcbMode, UsingLib) {
     AES_decrypt(in, out, &aes_key);
   }
 
-  size_t padding_length = plaintext.back();
+  auto padding_length = static_cast<uint8_t>(plaintext.back());
   plaintext.resize(plaintext.size() - padding_length);
 
   std::string expected_end = "Play that funky music \n";

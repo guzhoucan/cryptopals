@@ -28,7 +28,8 @@ target_link_libraries(repeat_key_xor PUBLIC single_byte_xor_cipher)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/break_repeat_key_xor.txt
         ${CMAKE_CURRENT_BINARY_DIR}/break_repeat_key_xor.txt COPYONLY)
 add_executable(repeat_key_xor_test repeat_key_xor_test.cpp)
-target_link_libraries(repeat_key_xor_test PRIVATE gtest_main absl::strings repeat_key_xor)
+target_link_libraries(repeat_key_xor_test PRIVATE gtest_main absl::strings
+        repeat_key_xor)
 
 # Challenge 7
 set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES /usr/include)
@@ -42,6 +43,8 @@ message("OPENSSL_SSL_LIBRARY is " ${OPENSSL_SSL_LIBRARY})
 message("OPENSSL_LIBRARIES is " ${OPENSSL_LIBRARIES})
 message("OPENSSL_VERSION is " ${OPENSSL_VERSION})
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/aes_in_ecb_mode.txt ${CMAKE_CURRENT_BINARY_DIR}/aes_in_ecb_mode.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/aes_in_ecb_mode.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/aes_in_ecb_mode.txt COPYONLY)
 add_executable(aes_in_ecb_mode_test aes_in_ecb_mode_test.cpp)
-target_link_libraries(aes_in_ecb_mode_test PRIVATE gtest_main absl::strings OpenSSL::Crypto)
+target_link_libraries(aes_in_ecb_mode_test PRIVATE gtest_main absl::strings
+        OpenSSL::Crypto)

@@ -1,34 +1,32 @@
 #include "single_byte_xor_cipher.h"
 
-#include <climits>
-
 #include "fixed_xor.h"
 #include "letter_frequency.h"
 
 namespace cryptopals {
 
-SingleByteXorPlaintext DecodeSingleByteXorCipher(std::string_view cipher_text) {
+SingleByteXorPlaintext DecodeSingleByteXorCipher(std::string_view ciphertext) {
   SingleByteXorPlaintext result;
   result.score = std::numeric_limits<double>::lowest();
   for (uint32_t k = 0; k <= 0xff; k++) {
     std::string candidate =
-        FixedXor(cipher_text, std::string(cipher_text.size(), k));
+        FixedXor(ciphertext, std::string(ciphertext.size(), k));
     double score = MessageAvgFreq(candidate);
     if (score > result.score) {
       result.score = score;
       result.key = k;
-      result.plain_text = candidate;
+      result.plaintext = candidate;
     }
   }
   return result;
 }
 
 SingleByteXorPlaintext DetectSingleByteXorCipher(
-    std::vector<std::string> cipher_texts) {
+    std::vector<std::string> ciphertexts) {
   SingleByteXorPlaintext best, current;
   best.score = std::numeric_limits<double>::lowest();
-  for (int i = 0; i < cipher_texts.size(); i++) {
-    current = DecodeSingleByteXorCipher(cipher_texts[i]);
+  for (int i = 0; i < ciphertexts.size(); i++) {
+    current = DecodeSingleByteXorCipher(ciphertexts[i]);
     if (current.score > best.score) {
       best = current;
       best.pos = i;
