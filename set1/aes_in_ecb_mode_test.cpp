@@ -8,7 +8,7 @@
 namespace cryptopals {
 namespace {
 
-TEST(DecryptAesInEcbMode, UsingLib) {
+TEST(DecryptAesInEcbModeTest, DecryptUsingLib) {
   std::ifstream file("aes_in_ecb_mode.txt", std::ios::in | std::ios::binary);
   ASSERT_TRUE(file.is_open());
   std::stringstream ss;

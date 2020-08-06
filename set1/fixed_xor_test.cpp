@@ -6,7 +6,7 @@
 namespace cryptopals {
 namespace {
 
-TEST(FixedXor, Test) {
+TEST(FixedXorTest, Test) {
   std::string str1 =
       absl::HexStringToBytes("1c0111001f010100061a024b53535009181c");
   std::string str2 =

@@ -8,7 +8,7 @@
 namespace cryptopals {
 namespace {
 
-TEST(DecodeSingleByteXorCipher, Test) {
+TEST(SingleByteXorCipherTest, DecodeSingleByteXorCipher) {
   std::string ciphertext = absl::HexStringToBytes(
       "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736");
   SingleByteXorPlaintext result = DecodeSingleByteXorCipher(ciphertext);
@@ -16,7 +16,7 @@ TEST(DecodeSingleByteXorCipher, Test) {
   EXPECT_EQ('X', result.key);
 }
 
-TEST(DetectSingleByteXorCipher, Test) {
+TEST(SingleByteXorCipherTest, DetectSingleByteXorCipher) {
   std::vector<std::string> ciphertexts;
   std::ifstream file("detect_single_byte_xor_cipher.txt");
   ASSERT_TRUE(file.is_open());

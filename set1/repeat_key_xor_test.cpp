@@ -8,7 +8,7 @@
 namespace cryptopals {
 namespace {
 
-TEST(RepeatKeyXorEncode, Test) {
+TEST(RepeatKeyXorTest, RepeatKeyXorEncode) {
   std::string key = "ICE";
   std::string plaintext =
       "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a "
@@ -21,13 +21,13 @@ TEST(RepeatKeyXorEncode, Test) {
       absl::BytesToHexString(ciphertext));
 }
 
-TEST(GetHammingDistance, Test) {
+TEST(RepeatKeyXorTest, GetHammingDistance) {
   std::string str1 = "this is a test";
   std::string str2 = "wokka wokka!!!";
   EXPECT_EQ(37, GetHammingDistance(str1, str2));
 }
 
-TEST(BreakRepeatKeyXor, Test) {
+TEST(RepeatKeyXorTest, BreakRepeatKeyXor) {
   std::ifstream file("break_repeat_key_xor.txt",
                      std::ios::in | std::ios::binary);
   ASSERT_TRUE(file.is_open());
