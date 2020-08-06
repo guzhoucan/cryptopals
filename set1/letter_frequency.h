@@ -5,7 +5,7 @@
 
 namespace cryptopals {
 
-double CharFreq(char ch);
+double CharFreq(unsigned char ch);
 
 double MessageAvgFreq(std::string_view message);
 

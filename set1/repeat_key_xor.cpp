@@ -56,7 +56,7 @@ min_heap<KeySize> GuessKeySize(std::string_view ciphertext) {
     std::vector<std::string> blobs(
         std::max(static_cast<uint8_t>(ciphertext.size() / s), kMaxBlobsCount));
     for (int i = 0; i < blobs.size(); i++) {
-      blobs.emplace_back(ciphertext.substr(i * s, s));
+      blobs[i] = ciphertext.substr(i * s, s);
     }
     // calculate the average hamming dist between blobs
     uint64_t total_dist = 0;

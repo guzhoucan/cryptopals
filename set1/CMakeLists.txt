@@ -8,8 +8,10 @@ add_executable(fixed_xor_test fixed_xor_test.cpp)
 target_link_libraries(fixed_xor_test PRIVATE gtest_main absl::strings fixed_xor)
 
 # Challenge 3 & 4
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1984.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/1984.txt COPYONLY)
 add_library(letter_freq STATIC letter_frequency.h letter_frequency.cpp)
-target_link_libraries(letter_freq PUBLIC absl::strings)
+target_link_libraries(letter_freq PUBLIC absl::strings absl::flat_hash_map)
 
 add_library(single_byte_xor_cipher STATIC single_byte_xor_cipher.h
         single_byte_xor_cipher.cpp)
