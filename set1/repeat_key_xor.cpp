@@ -4,6 +4,7 @@
 #include <functional>
 #include <queue>
 #include <vector>
+#include <climits>
 
 #include "single_byte_xor_cipher.h"
 
@@ -100,7 +101,7 @@ std::string RepeatKeyXorDecode(std::string_view cipher_text,
 
 BreakRepeatKeyXorOutput BreakRepeatKeyXor(std::string_view cipher_text) {
   BreakRepeatKeyXorOutput best;
-  best.score = -DBL_MAX;
+  best.score = std::numeric_limits<double>::lowest();
   auto key_guesses = GuessKeySize(cipher_text);
   int max_tries = std::min(key_guesses.size(), (size_t)kKeySizeCandidateCount);
   for (int tries = 0; tries < max_tries; tries++, key_guesses.pop()) {
