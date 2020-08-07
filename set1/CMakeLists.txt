@@ -33,7 +33,7 @@ add_executable(repeat_key_xor_test repeat_key_xor_test.cpp)
 target_link_libraries(repeat_key_xor_test PRIVATE gtest_main absl::strings
         repeat_key_xor)
 
-# Challenge 7
+# Challenge 7 & 8
 set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES /usr/include)
 set(OPENSSL_ROOT_DIR /usr/lib/x86_64-linux-gnu)
 message("OPENSSL_ROOT_DIR is " ${OPENSSL_ROOT_DIR})
@@ -46,10 +46,12 @@ message("OPENSSL_LIBRARIES is " ${OPENSSL_LIBRARIES})
 message("OPENSSL_VERSION is " ${OPENSSL_VERSION})
 
 add_library(aes_in_ecb_mode STATIC aes_in_ecb_mode.h aes_in_ecb_mode.cpp)
-target_link_libraries(aes_in_ecb_mode PUBLIC OpenSSL::Crypto)
+target_link_libraries(aes_in_ecb_mode PUBLIC OpenSSL::Crypto absl::flat_hash_map)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/aes_in_ecb_mode.txt
         ${CMAKE_CURRENT_BINARY_DIR}/aes_in_ecb_mode.txt COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/detect_aes_in_ecb_mode.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/detect_aes_in_ecb_mode.txt COPYONLY)
 add_executable(aes_in_ecb_mode_test aes_in_ecb_mode_test.cpp)
 target_link_libraries(aes_in_ecb_mode_test PRIVATE gtest_main absl::strings
         aes_in_ecb_mode)

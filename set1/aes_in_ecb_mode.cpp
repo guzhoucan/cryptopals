@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "absl/container/flat_hash_map.h"
+
 namespace cryptopals {
 
 std::string DecryptAesInEcbMode(std::string_view ciphertext,
@@ -30,6 +32,19 @@ std::string DecryptAesInEcbMode(std::string_view ciphertext,
   plaintext.resize(plaintext.size() - padding_length);
 
   return plaintext;
+}
+
+// Original idea from kunin@
+EcbPattern GetEcbPattern(std::string_view ciphertext) {
+  EcbPattern result = {.ciphertext = std::string(ciphertext), .uniqueness = 0};
+  absl::flat_hash_map<std::string, uint32_t> blob_map;
+  for (size_t i = 0; i < ciphertext.size(); i += 16) {
+    blob_map[ciphertext.substr(i, 16)] += 1;
+  }
+  for (auto& [content, count] : blob_map) {
+    result.uniqueness += count * count;
+  }
+  return result;
 }
 
 }  // namespace cryptopals
