@@ -1,4 +1,4 @@
-#include <openssl/aes.h>
+#include "aes_in_ecb_mode.h"
 
 #include <fstream>
 
@@ -19,24 +19,9 @@ TEST(DecryptAesInEcbModeTest, DecryptUsingLib) {
   ASSERT_TRUE(absl::Base64Unescape(ciphertext_base64, &ciphertext));
 
   std::string key = "YELLOW SUBMARINE";
-  AES_KEY aes_key;
-  ASSERT_EQ(0, AES_set_decrypt_key(
-                   reinterpret_cast<const unsigned char*>(key.c_str()),
-                   key.size() * 8, &aes_key));
-
-  std::string plaintext(ciphertext.size(), 0);
-
-  for (size_t i = 0; i < ciphertext.size(); i += 16) {
-    const auto* in = reinterpret_cast<const unsigned char*>(&ciphertext[i]);
-    auto* out = reinterpret_cast<unsigned char*>(&plaintext[i]);
-    AES_decrypt(in, out, &aes_key);
-  }
-
-  auto padding_length = static_cast<uint8_t>(plaintext.back());
-  plaintext.resize(plaintext.size() - padding_length);
+  auto plaintext = DecryptAesInEcbMode(ciphertext, key);
 
   std::string expected_end = "Play that funky music \n";
-
   ASSERT_EQ(plaintext.substr(plaintext.size() - expected_end.size()),
             expected_end);
 }

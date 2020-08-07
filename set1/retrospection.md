@@ -33,3 +33,7 @@ Some wild ideas:
 * Can we make the ciphertext purely random so no one knows what it is? -- Well, then you need to have customized keys for every single part of the plaintext. It'll be just hiding the entropy into your key -- nothing better than using the plaintext as my key to get an empty ciphertext :P
 * Surprisingly, it turns out that using an English key is better than a random bitstream. By doing so you have successfully decreased the number of `1`'s in `key_1 ^ key_2`, and the ture `KEYSIZE` won't be **that** outstanding from all the `KEYSIZE` guesses :)
 
+## AES in ECB mode
+* Check out [A Stick Figure Guide to the Advanced Encryption Standard](http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html)!
+* The padding mechanism isn't provided from the challenge context, but hinted via *"Easiest way: use OpenSSL::Cipher and give it AES-128-ECB as the cipher"*, where by default it uses [PKCS#5](https://en.wikipedia.org/wiki/Padding_%28cryptography%29#PKCS#5_and_PKCS#7) padding.
+

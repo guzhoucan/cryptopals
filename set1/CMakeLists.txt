@@ -45,8 +45,11 @@ message("OPENSSL_SSL_LIBRARY is " ${OPENSSL_SSL_LIBRARY})
 message("OPENSSL_LIBRARIES is " ${OPENSSL_LIBRARIES})
 message("OPENSSL_VERSION is " ${OPENSSL_VERSION})
 
+add_library(aes_in_ecb_mode STATIC aes_in_ecb_mode.h aes_in_ecb_mode.cpp)
+target_link_libraries(aes_in_ecb_mode PUBLIC OpenSSL::Crypto)
+
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/aes_in_ecb_mode.txt
         ${CMAKE_CURRENT_BINARY_DIR}/aes_in_ecb_mode.txt COPYONLY)
 add_executable(aes_in_ecb_mode_test aes_in_ecb_mode_test.cpp)
 target_link_libraries(aes_in_ecb_mode_test PRIVATE gtest_main absl::strings
-        OpenSSL::Crypto)
+        aes_in_ecb_mode)
