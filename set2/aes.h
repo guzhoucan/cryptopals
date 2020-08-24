@@ -5,12 +5,12 @@
 
 namespace cryptopals {
 
+// Note for all methods:
+// `key` should be 128/192/256 bits.
+// `plaintext`/`ciphertext` needs to be aligned with 128-bit blocks.
+// 'iv' needs to be 128-bit long.
 class Aes {
  public:
-  // Note: `key` should be either 128/192/256 bits.
-  // Ideally, `plaintext`/`ciphertext` should be aligned with 128-bit blocks.
-  // But it seems that the actual openssl impl works with arbitrary input (see
-  // UT).
   std::string static EcbEncrypt(std::string_view plaintext,
                                 std::string_view key);
   std::string static EcbDecrypt(std::string_view ciphertext,

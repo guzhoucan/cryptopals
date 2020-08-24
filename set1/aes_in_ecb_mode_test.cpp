@@ -22,7 +22,7 @@ TEST(AesInEcbModeTest, DecryptUsingLib) {
   auto plaintext = DecryptAesInEcbMode(ciphertext, key);
 
   std::string expected_end = "Play that funky music \n";
-  ASSERT_EQ(plaintext.substr(plaintext.size() - expected_end.size()),
+  EXPECT_EQ(plaintext.substr(plaintext.size() - expected_end.size()),
             expected_end);
 }
 
@@ -47,8 +47,8 @@ TEST(AesInEcbModeTest, DetectAesInEcbMode) {
     }
   }
 
-  ASSERT_EQ(132, best_index);  // Line 133 - not sure if it is correct.
-  ASSERT_EQ(
+  EXPECT_EQ(132, best_index);  // Line 133 - not sure if it is correct.
+  EXPECT_EQ(
       "d880619740a8a19b7840a8a31c810a3d08649af70dc06f4fd5d2d69c744cd283e2dd052f"
       "6b641dbf9d11b0348542bb5708649af70dc06f4fd5d2d69c744cd2839475c9dfdbc1d465"
       "97949d9c7e82bf5a08649af70dc06f4fd5d2d69c744cd28397a93eab8d6aecd566489154"

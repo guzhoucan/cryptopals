@@ -32,6 +32,7 @@ AES_KEY GenerateAesDecryptKey(std::string_view key) {
 }  // namespace
 
 std::string Aes::EcbEncrypt(std::string_view plaintext, std::string_view key) {
+  assert(plaintext.size() % kBlockSize == 0);
   std::string ciphertext(plaintext.size(), 0);
   AES_KEY aes_key = GenerateAesEncryptKey(key);
   for (size_t i = 0; i < plaintext.size(); i += kBlockSize) {
@@ -43,6 +44,7 @@ std::string Aes::EcbEncrypt(std::string_view plaintext, std::string_view key) {
 }
 
 std::string Aes::EcbDecrypt(std::string_view ciphertext, std::string_view key) {
+  assert(ciphertext.size() % kBlockSize == 0);
   std::string plaintext(ciphertext.size(), 0);
   AES_KEY aes_key = GenerateAesDecryptKey(key);
   for (size_t i = 0; i < ciphertext.size(); i += kBlockSize) {
@@ -55,6 +57,7 @@ std::string Aes::EcbDecrypt(std::string_view ciphertext, std::string_view key) {
 
 std::string Aes::CbcEncrypt(std::string_view plaintext, std::string_view key,
                             std::string_view iv) {
+  assert(plaintext.size() % kBlockSize == 0);
   assert(iv.size() == kBlockSize);
   std::string ciphertext(plaintext.size(), 0);
   AES_KEY aes_key = GenerateAesEncryptKey(key);
@@ -71,6 +74,7 @@ std::string Aes::CbcEncrypt(std::string_view plaintext, std::string_view key,
 
 std::string Aes::CbcDecrypt(std::string_view ciphertext, std::string_view key,
                             std::string_view iv) {
+  assert(ciphertext.size() % kBlockSize == 0);
   assert(iv.size() == kBlockSize);
   std::string plaintext(ciphertext.size(), 0);
   AES_KEY aes_key = GenerateAesDecryptKey(key);
