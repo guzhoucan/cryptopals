@@ -42,5 +42,35 @@ TEST(BaseTest, Mul) {
   }
 }
 
+// Check that S-boxes are inverses of each other.
+TEST(BaseTest, SBoxes) {
+  for (uint16_t i = 0; i < 0x100; i++) {
+    EXPECT_EQ(i, kSBox1[kSBox0[i]]);
+    EXPECT_EQ(i, kSBox0[kSBox1[i]]);
+  }
+}
+
+TEST(BaseTest, PutU32) {
+  uint8_t addr[4];
+  PutU32(uint32_t(0x01020304), addr);
+  EXPECT_EQ(0x01, addr[0]);
+  EXPECT_EQ(0x02, addr[1]);
+  EXPECT_EQ(0x03, addr[2]);
+  EXPECT_EQ(0x04, addr[3]);
+}
+
+TEST(BaseTest, GetU32) {
+  uint8_t addr[4];
+  addr[0] = 0x01;
+  addr[1] = 0x02;
+  addr[2] = 0x03;
+  addr[3] = 0x04;
+  EXPECT_EQ(0x01020304u, GetU32(addr));
+}
+
+TEST(BaseTest, SubWord) { EXPECT_EQ(0x8a84eb01u, SubWord(0xcf4f3c09u)); }
+
+TEST(BaseTest, RotWord) { EXPECT_EQ(0x02030401u, RotWord(0x01020304u)); }
+
 }  // namespace
 }  // namespace cryptopals::aes

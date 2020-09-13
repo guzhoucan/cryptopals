@@ -32,4 +32,24 @@ uint8_t Mul(uint8_t a, uint8_t b) {
   return product;
 }
 
+uint32_t GetU32(const uint8_t* addr) {
+  return ((uint32_t)addr[0] << 24u) | ((uint32_t)addr[1] << 16u) |
+         ((uint32_t)(addr)[2] << 8u) | ((uint32_t)(addr)[3]);
+}
+void PutU32(uint32_t val, uint8_t* addr) {
+  addr[0] = (uint8_t)(val >> 24u);
+  addr[1] = (uint8_t)(val >> 16u);
+  addr[2] = (uint8_t)(val >> 8u);
+  addr[3] = (uint8_t)val;
+}
+
+uint32_t SubWord(uint32_t word) {
+  return ((uint32_t)kSBox0[(uint8_t)(word >> 24u)] << 24u) |
+         ((uint32_t)kSBox0[(uint8_t)(word >> 16u)] << 16u) |
+         ((uint32_t)kSBox0[(uint8_t)(word >> 8u)] << 8u) |
+         ((uint32_t)kSBox0[(uint8_t)word]);
+}
+
+uint32_t RotWord(uint32_t word) { return word << 8u | word >> 24u; }
+
 }  // namespace cryptopals::aes

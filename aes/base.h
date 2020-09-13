@@ -86,6 +86,17 @@ inline constexpr uint8_t kSBox1[] = {
     0x55, 0x21, 0x0c, 0x7d,
 };
 
+// Helper methods to get/put uint32 with big endianness
+uint32_t GetU32(const uint8_t* addr);
+void PutU32(uint32_t val, uint8_t* addr);
+
+// Takes a four-byte input word and applies the S-box
+uint32_t SubWord(uint32_t word);
+
+// Takes a word [a0,a1,a2,a3] as input, performs a cyclic permutation, and
+// returns the word [a1,a2,a3,a0]
+uint32_t RotWord(uint32_t word);
+
 }  // namespace cryptopals::aes
 
 #endif  // CRYPTOPALS_AES_BASE_H_
