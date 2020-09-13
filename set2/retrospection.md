@@ -55,3 +55,9 @@ This issue can be easily detected by tools like valgrind, see:
 Initially I thought there's some platform-based optimization where an implicit padding is applied, but the [source code](https://github.com/openssl/openssl/blob/OpenSSL_1_1_1-stable/crypto/aes/aes_core.c) shows it assumes 16 bytes of memory is allocated and will directly accessing it.
 
 My final question: How is [aes_core.c](https://github.com/openssl/openssl/blob/OpenSSL_1_1_1-stable/crypto/aes/aes_core.c) compiled with two suites of implementation sharing the same function signature?!
+
+## ECB/CBC detection oracle
+
+There's another attack that we can apply to the ECB/CBC detection oracle given the fact we know that it's applying PKCS#7 padding, found by cfenn@.
+
+We can rely on the fact that when the random-sized prefix/suffix happen to make the padded plaintext to be "block-aligned", i.e. `size(padded) % 16 == 0`. Then we know for fact that the final block would be `0x10101010101010101010101010101010`. If we use the input of all `0x10` bytes, we can correctly tell the oracle is using ECB mode. --- Well, it's only gaining us some advantage since the size of padding is not deterministic, but we can get it correct on 1/6 of the chance (which is P(size of prefix + suffix == 15)) with the input of size 33 (1 full block + other 17 bytes to "fill the block" with prefix and suffix). We start to gain non-zero advantage from only 27 bytes of input!
