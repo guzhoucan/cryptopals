@@ -16,6 +16,7 @@ message("OPENSSL_VERSION is " ${OPENSSL_VERSION})
 
 add_subdirectory(lib/abseil-cpp)
 add_subdirectory(lib/googletest)
+add_subdirectory(aes)
 add_subdirectory(set1)
 add_subdirectory(set2)
 
