@@ -59,4 +59,80 @@ uint32_t InvSubWord(uint32_t word) {
 
 uint32_t RotWord(uint32_t word) { return word << 8u | word >> 24u; }
 
+// FIPS-197 5.1.2 ShiftRows() Transformation
+// s[0][0] s[1][0] s[2][0] s[3][0] ---> s[0][0] s[1][0] s[2][0] s[3][0]
+// s[0][1] s[1][1] s[2][1] s[3][1] ---> s[1][1] s[2][1] s[3][1] s[0][1]
+// s[0][2] s[1][2] s[2][2] s[3][2] ---> s[2][2] s[3][2] s[0][2] s[1][2]
+// s[0][3] s[1][3] s[2][3] s[3][3] ---> s[3][3] s[0][3] s[1][3] s[2][3]
+//    s0      s1      s2      s3          t0      t1      t2      t3
+std::array<uint32_t, 4> ShiftRows(const std::array<uint32_t, 4> s) {
+  uint32_t t0, t1, t2, t3;
+  t0 = s[0] & 0xff000000u | s[1] & 0x00ff0000u | s[2] & 0x0000ff00u |
+       s[3] & 0x000000ffu;
+  t1 = s[1] & 0xff000000u | s[2] & 0x00ff0000u | s[3] & 0x0000ff00u |
+       s[0] & 0x000000ffu;
+  t2 = s[2] & 0xff000000u | s[3] & 0x00ff0000u | s[0] & 0x0000ff00u |
+       s[1] & 0x000000ffu;
+  t3 = s[3] & 0xff000000u | s[0] & 0x00ff0000u | s[1] & 0x0000ff00u |
+       s[2] & 0x000000ffu;
+  return std::array<uint32_t, 4>{t0, t1, t2, t3};
+}
+
+// FIPS-197 5.3.1 InvShiftRows() Transformation
+// s[0][0] s[1][0] s[2][0] s[3][0] ---> s[0][0] s[1][0] s[2][0] s[3][0]
+// s[0][1] s[1][1] s[2][1] s[3][1] ---> s[3][1] s[0][1] s[1][1] s[2][1]
+// s[0][2] s[1][2] s[2][2] s[3][2] ---> s[2][2] s[3][2] s[0][2] s[1][2]
+// s[0][3] s[1][3] s[2][3] s[3][3] ---> s[1][3] s[2][3] s[3][3] s[0][3]
+//    s0      s1      s2      s3          t0      t1      t2      t3
+std::array<uint32_t, 4> InvShiftRows(const std::array<uint32_t, 4> s) {
+  uint32_t t0, t1, t2, t3;
+  t0 = s[0] & 0xff000000u | s[3] & 0x00ff0000u | s[2] & 0x0000ff00u |
+       s[1] & 0x000000ffu;
+  t1 = s[1] & 0xff000000u | s[0] & 0x00ff0000u | s[3] & 0x0000ff00u |
+       s[2] & 0x000000ffu;
+  t2 = s[2] & 0xff000000u | s[1] & 0x00ff0000u | s[0] & 0x0000ff00u |
+       s[3] & 0x000000ffu;
+  t3 = s[3] & 0xff000000u | s[2] & 0x00ff0000u | s[1] & 0x0000ff00u |
+       s[0] & 0x000000ffu;
+  return std::array<uint32_t, 4>{t0, t1, t2, t3};
+}
+
+// FIPS-197 5.1.3 MixColumns() Transformation
+// Equivalent in math to:
+// a(x) = {03}x^3 + {01}x^2 + {01}x + {02}
+// return a(x) * s(x)
+uint32_t MixColumn(uint32_t s) {
+  uint8_t b0 = s >> 24u;
+  uint8_t b1 = s >> 16u;
+  uint8_t b2 = s >> 8u;
+  uint8_t b3 = s;
+  uint8_t t1 = Mul(0x02u, b0) ^ Mul(0x03u, b1) ^ b2 ^ b3;
+  uint8_t t2 = b0 ^ Mul(0x02u, b1) ^ Mul(0x03u, b2) ^ b3;
+  uint8_t t3 = b0 ^ b1 ^ Mul(0x02u, b2) ^ Mul(0x03u, b3);
+  uint8_t t4 = Mul(0x03u, b0) ^ b1 ^ b2 ^ Mul(0x02u, b3);
+  return (uint32_t)t1 << 24u | (uint32_t)t2 << 16u | (uint32_t)t3 << 8u |
+         (uint32_t)t4;
+}
+
+// FIPS-197 5.3.3 InvMixColumns() Transformation
+// Equivalent in math to:
+// a^-1(x) = {0b}x^3 + {0d}x^2 + {09}x + {0e}
+// return a^-1(x) * s(x)
+uint32_t InvMixColumn(uint32_t s) {
+  uint8_t b0 = s >> 24u;
+  uint8_t b1 = s >> 16u;
+  uint8_t b2 = s >> 8u;
+  uint8_t b3 = s;
+  uint8_t t1 =
+      Mul(0x0eu, b0) ^ Mul(0x0bu, b1) ^ Mul(0x0du, b2) ^ Mul(0x09u, b3);
+  uint8_t t2 =
+      Mul(0x09u, b0) ^ Mul(0x0eu, b1) ^ Mul(0x0bu, b2) ^ Mul(0x0du, b3);
+  uint8_t t3 =
+      Mul(0x0du, b0) ^ Mul(0x09u, b1) ^ Mul(0x0eu, b2) ^ Mul(0x0bu, b3);
+  uint8_t t4 =
+      Mul(0x0bu, b0) ^ Mul(0x0du, b1) ^ Mul(0x09u, b2) ^ Mul(0x0eu, b3);
+  return (uint32_t)t1 << 24u | (uint32_t)t2 << 16u | (uint32_t)t3 << 8u |
+         (uint32_t)t4;
+}
+
 }  // namespace cryptopals::aes

@@ -1,6 +1,7 @@
 #ifndef CRYPTOPALS_AES_BASE_H_
 #define CRYPTOPALS_AES_BASE_H_
 
+#include <array>
 #include <cstdint>
 
 namespace cryptopals::aes {
@@ -98,6 +99,11 @@ uint32_t InvSubWord(uint32_t word);
 // Takes a word [a0,a1,a2,a3] as input, performs a cyclic permutation, and
 // returns the word [a1,a2,a3,a0]
 uint32_t RotWord(uint32_t word);
+
+std::array<uint32_t, 4> ShiftRows(std::array<uint32_t, 4> s);
+std::array<uint32_t, 4> InvShiftRows(std::array<uint32_t, 4> s);
+uint32_t MixColumn(uint32_t s);
+uint32_t InvMixColumn(uint32_t s);
 
 }  // namespace cryptopals::aes
 
