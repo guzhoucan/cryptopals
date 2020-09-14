@@ -14,9 +14,9 @@ class KeySchedule {
   static std::unique_ptr<KeySchedule> ExpandKey(std::string_view key);
 
   std::vector<uint32_t> enc;
-  std::vector<uint32_t> dec;
-  uint nk;  // Key Length (Nk words)
-  uint nr;  // Number of Rounds(Nr)
+  std::vector<uint32_t> dec;  // FIPS-197 5.3.5 Equivalent Inverse Cipher
+  uint nk;                    // Key Length (Nk words)
+  uint nr;                    // Number of Rounds(Nr)
 };
 
 }  // namespace cryptopals::aes

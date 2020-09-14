@@ -39,5 +39,37 @@ TEST(CipherTest, Encrypt256) {
             ciphertext);
 }
 
+TEST(CipherTest, Decrypt128) {
+  std::string ciphertext =
+      absl::HexStringToBytes("69c4e0d86a7b0430d8cdb78070b4c55a");
+  std::string key = absl::HexStringToBytes("000102030405060708090a0b0c0d0e0f");
+  auto aes = AesCipher::Create(key);
+  std::string plaintext = aes->Decrypt(ciphertext);
+  EXPECT_EQ(absl::HexStringToBytes("00112233445566778899aabbccddeeff"),
+            plaintext);
+}
+
+TEST(CipherTest, Decrypt192) {
+  std::string ciphertext =
+      absl::HexStringToBytes("dda97ca4864cdfe06eaf70a0ec0d7191");
+  std::string key = absl::HexStringToBytes(
+      "000102030405060708090a0b0c0d0e0f1011121314151617");
+  auto aes = AesCipher::Create(key);
+  std::string plaintext = aes->Decrypt(ciphertext);
+  EXPECT_EQ(absl::HexStringToBytes("00112233445566778899aabbccddeeff"),
+            plaintext);
+}
+
+TEST(CipherTest, Decrypt256) {
+  std::string ciphertext =
+      absl::HexStringToBytes("8ea2b7ca516745bfeafc49904b496089");
+  std::string key = absl::HexStringToBytes(
+      "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
+  auto aes = AesCipher::Create(key);
+  std::string plaintext = aes->Decrypt(ciphertext);
+  EXPECT_EQ(absl::HexStringToBytes("00112233445566778899aabbccddeeff"),
+            plaintext);
+}
+
 }  // namespace
 }  // namespace cryptopals::aes

@@ -50,6 +50,13 @@ uint32_t SubWord(uint32_t word) {
          ((uint32_t)kSBox0[(uint8_t)word]);
 }
 
+uint32_t InvSubWord(uint32_t word) {
+  return ((uint32_t)kSBox1[(uint8_t)(word >> 24u)] << 24u) |
+         ((uint32_t)kSBox1[(uint8_t)(word >> 16u)] << 16u) |
+         ((uint32_t)kSBox1[(uint8_t)(word >> 8u)] << 8u) |
+         ((uint32_t)kSBox1[(uint8_t)word]);
+}
+
 uint32_t RotWord(uint32_t word) { return word << 8u | word >> 24u; }
 
 }  // namespace cryptopals::aes

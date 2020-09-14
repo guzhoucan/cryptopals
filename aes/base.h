@@ -92,6 +92,8 @@ void PutU32(uint32_t val, uint8_t* addr);
 
 // Takes a four-byte input word and applies the S-box
 uint32_t SubWord(uint32_t word);
+// Takes a four-byte input word and applies the S-box-inv
+uint32_t InvSubWord(uint32_t word);
 
 // Takes a word [a0,a1,a2,a3] as input, performs a cyclic permutation, and
 // returns the word [a1,a2,a3,a0]

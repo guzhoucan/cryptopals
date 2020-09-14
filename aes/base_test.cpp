@@ -70,6 +70,8 @@ TEST(BaseTest, GetU32) {
 
 TEST(BaseTest, SubWord) { EXPECT_EQ(0x8a84eb01u, SubWord(0xcf4f3c09u)); }
 
+TEST(BaseTest, InvSubWord) { EXPECT_EQ(0xcf4f3c09u, InvSubWord(0x8a84eb01u)); }
+
 TEST(BaseTest, RotWord) { EXPECT_EQ(0x02030401u, RotWord(0x01020304u)); }
 
 }  // namespace
