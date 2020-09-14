@@ -17,6 +17,7 @@ class AesCipher {
 
   std::string Encrypt(std::string_view plaintext);
   std::string Decrypt(std::string_view ciphertext);
+  std::string EquivDecrypt(std::string_view ciphertext);
 
  private:
   std::unique_ptr<KeySchedule> ks;

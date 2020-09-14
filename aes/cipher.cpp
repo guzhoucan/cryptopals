@@ -150,4 +150,71 @@ std::string AesCipher::Decrypt(std::string_view ciphertext) {
   return std::string(reinterpret_cast<const char*>(state), kBlockSize);
 }
 
+// FIPS-197 Figure 15. Pseudo Code for the Equivalent Inverse Cipher
+std::string AesCipher::EquivDecrypt(std::string_view ciphertext) {
+  if (ciphertext.size() != kBlockSize) {
+    throw std::invalid_argument("invalid plaintext size");
+  }
+  const auto* in = (uint8_t*)ciphertext.data();
+
+  // FIPS-197 Figure 3. State array input and output.
+  // s[n] is the n-th column
+
+  // AddRoundKey
+  uint32_t s0 = GetU32(in) ^ ks->dec[4 * ks->nr];
+  uint32_t s1 = GetU32(in + 4) ^ ks->dec[4 * ks->nr + 1];
+  uint32_t s2 = GetU32(in + 8) ^ ks->dec[4 * ks->nr + 2];
+  uint32_t s3 = GetU32(in + 12) ^ ks->dec[4 * ks->nr + 3];
+
+  for (uint round = ks->nr - 1; round > 0; round--) {
+    // InvSubBytes
+    s0 = InvSubWord(s0);
+    s1 = InvSubWord(s1);
+    s2 = InvSubWord(s2);
+    s3 = InvSubWord(s3);
+    // InvShiftRows
+    auto t = InvShiftRows({s0, s1, s2, s3});
+    s0 = t[0];
+    s1 = t[1];
+    s2 = t[2];
+    s3 = t[3];
+    // InvMixColumns
+    s0 = InvMixColumn(s0);
+    s1 = InvMixColumn(s1);
+    s2 = InvMixColumn(s2);
+    s3 = InvMixColumn(s3);
+    // AddRoundKey
+    s0 ^= ks->dec[4 * round];
+    s1 ^= ks->dec[4 * round + 1];
+    s2 ^= ks->dec[4 * round + 2];
+    s3 ^= ks->dec[4 * round + 3];
+  }
+
+  // InvSubBytes
+  s0 = InvSubWord(s0);
+  s1 = InvSubWord(s1);
+  s2 = InvSubWord(s2);
+  s3 = InvSubWord(s3);
+  // InvShiftRows
+  auto t = InvShiftRows({s0, s1, s2, s3});
+  s0 = t[0];
+  s1 = t[1];
+  s2 = t[2];
+  s3 = t[3];
+  // AddRoundKey
+  s0 ^= ks->dec[0];
+  s1 ^= ks->dec[1];
+  s2 ^= ks->dec[2];
+  s3 ^= ks->dec[3];
+
+  // Store state back to memory with big-endian
+  uint8_t state[kBlockSize];
+  PutU32(s0, state);
+  PutU32(s1, state + 4);
+  PutU32(s2, state + 8);
+  PutU32(s3, state + 12);
+
+  return std::string(reinterpret_cast<const char*>(state), kBlockSize);
+}
+
 }  // namespace cryptopals::aes

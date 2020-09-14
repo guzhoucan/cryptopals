@@ -28,6 +28,23 @@ void ExpandEnc(std::vector<uint32_t>* enc, const uint8_t* key,
   }
 }
 
+// FIPS-197 Figure 15. Pseudo Code for the Equivalent Inverse Cipher.
+// Different than other implementations, dec is not re-ordered and we still
+// need to use dec[4 * nr] in the first round of decryption.
+void PopulateDec(std::vector<uint32_t>* enc, std::vector<uint32_t>* dec,
+                 uint nr) {
+  for (uint i = 0; i < 4 * (nr + 1); i++) {
+    (*dec)[i] = (*enc)[i];
+  }
+  for (uint round = 1; round < nr; round++) {
+    uint ind = 4 * round;
+    (*dec)[ind] = InvMixColumn((*dec)[ind]);
+    (*dec)[ind + 1] = InvMixColumn((*dec)[ind + 1]);
+    (*dec)[ind + 2] = InvMixColumn((*dec)[ind + 2]);
+    (*dec)[ind + 3] = InvMixColumn((*dec)[ind + 3]);
+  }
+}
+
 }  // namespace
 
 std::unique_ptr<KeySchedule> KeySchedule::ExpandKey(std::string_view key) {
@@ -54,7 +71,7 @@ std::unique_ptr<KeySchedule> KeySchedule::ExpandKey(std::string_view key) {
   ks->dec.resize(4 * (ks->nr + 1));
   ExpandEnc(&ks->enc, reinterpret_cast<const uint8_t*>(key.data()), ks->nk,
             ks->nr);
-  // TODO: populate dec
+  PopulateDec(&ks->enc, &ks->dec, ks->nr);
 
   return std::move(ks);
 }
