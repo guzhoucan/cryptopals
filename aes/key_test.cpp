@@ -16,6 +16,7 @@ TEST(KeyTest, KeyExpansion128) {
   AES_set_encrypt_key(reinterpret_cast<const unsigned char*>(key.data()),
                       static_cast<int>(key.size()) * 8, &aes_key);
 
+  EXPECT_EQ(10, ks->nr);
   EXPECT_EQ(44, ks->enc.size());
   for (int i = 0; i < ks->enc.size(); i++) {
     EXPECT_EQ(aes_key.rd_key[i], ks->enc[i]);
@@ -31,6 +32,7 @@ TEST(KeyTest, KeyExpansion192) {
   AES_set_encrypt_key(reinterpret_cast<const unsigned char*>(key.data()),
                       static_cast<int>(key.size()) * 8, &aes_key);
 
+  EXPECT_EQ(12, ks->nr);
   EXPECT_EQ(52, ks->enc.size());
   for (int i = 0; i < ks->enc.size(); i++) {
     EXPECT_EQ(aes_key.rd_key[i], ks->enc[i]);
@@ -46,6 +48,7 @@ TEST(KeyTest, KeyExpansion256) {
   AES_set_encrypt_key(reinterpret_cast<const unsigned char*>(key.data()),
                       static_cast<int>(key.size()) * 8, &aes_key);
 
+  EXPECT_EQ(14, ks->nr);
   EXPECT_EQ(60, ks->enc.size());
   for (int i = 0; i < ks->enc.size(); i++) {
     EXPECT_EQ(aes_key.rd_key[i], ks->enc[i]);

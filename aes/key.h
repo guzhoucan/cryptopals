@@ -15,6 +15,8 @@ class KeySchedule {
 
   std::vector<uint32_t> enc;
   std::vector<uint32_t> dec;
+  uint nk;  // Key Length (Nk words)
+  uint nr;  // Number of Rounds(Nr)
 };
 
 }  // namespace cryptopals::aes

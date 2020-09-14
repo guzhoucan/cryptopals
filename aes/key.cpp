@@ -33,28 +33,27 @@ void ExpandEnc(std::vector<uint32_t>* enc, const uint8_t* key,
 std::unique_ptr<KeySchedule> KeySchedule::ExpandKey(std::string_view key) {
   auto ks = std::make_unique<KeySchedule>();
   // FIPS-197 Figure 4. Key-Block-Round Combinations.
-  uint nk;  // Key Length (Nk words)
-  uint nr;  // Number of Rounds(Nr)
   switch (key.size()) {
     case 16:  // 128 bit
-      nk = 4;
-      nr = 10;
+      ks->nk = 4;
+      ks->nr = 10;
       break;
     case 24:  // 192 bit
-      nk = 6;
-      nr = 12;
+      ks->nk = 6;
+      ks->nr = 12;
       break;
     case 32:  // 256 bit
-      nk = 8;
-      nr = 14;
+      ks->nk = 8;
+      ks->nr = 14;
       break;
     default:
       throw std::invalid_argument("invalid key size");
   }
 
-  ks->enc.resize(4 * (nr + 1));
-  ks->dec.resize(4 * (nr + 1));
-  ExpandEnc(&ks->enc, reinterpret_cast<const uint8_t*>(key.data()), nk, nr);
+  ks->enc.resize(4 * (ks->nr + 1));
+  ks->dec.resize(4 * (ks->nr + 1));
+  ExpandEnc(&ks->enc, reinterpret_cast<const uint8_t*>(key.data()), ks->nk,
+            ks->nr);
   // TODO: populate dec
 
   return std::move(ks);
