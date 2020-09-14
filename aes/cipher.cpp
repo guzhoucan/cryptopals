@@ -86,7 +86,7 @@ std::string AesCipher::Encrypt(std::string_view plaintext) {
 // FIPS-197 Figure 12. Pseudo Code for the Inverse Cipher
 std::string AesCipher::Decrypt(std::string_view ciphertext) {
   if (ciphertext.size() != kBlockSize) {
-    throw std::invalid_argument("invalid plaintext size");
+    throw std::invalid_argument("invalid ciphertext size");
   }
   const auto* in = (uint8_t*)ciphertext.data();
 
@@ -153,7 +153,7 @@ std::string AesCipher::Decrypt(std::string_view ciphertext) {
 // FIPS-197 Figure 15. Pseudo Code for the Equivalent Inverse Cipher
 std::string AesCipher::EquivDecrypt(std::string_view ciphertext) {
   if (ciphertext.size() != kBlockSize) {
-    throw std::invalid_argument("invalid plaintext size");
+    throw std::invalid_argument("invalid ciphertext size");
   }
   const auto* in = (uint8_t*)ciphertext.data();
 
