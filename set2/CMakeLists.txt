@@ -18,3 +18,10 @@ target_link_libraries(rand_util PUBLIC)
 add_executable(mode_detection mode_detection.cpp)
 target_link_libraries(mode_detection PRIVATE gtest_main aes padding rand_util
         absl::flat_hash_set)
+
+# Challenge 12
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/unknown_str.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/unknown_str.txt COPYONLY)
+add_executable(ecb_decryption ecb_decryption.cpp)
+target_link_libraries(ecb_decryption PRIVATE gtest_main absl::strings aes
+        padding rand_util)
