@@ -15,8 +15,6 @@ target_link_libraries(aes_test PRIVATE gtest_main absl::strings aes rand_util)
 # Challenge 11
 add_library(rand_util STATIC rand_util.h rand_util.cpp)
 target_link_libraries(rand_util PUBLIC)
-add_library(detection_oracle STATIC detection_oracle.h detection_oracle.cpp)
-target_link_libraries(detection_oracle PUBLIC aes padding rand_util
+add_executable(mode_detection mode_detection.cpp)
+target_link_libraries(mode_detection PRIVATE gtest_main aes padding rand_util
         absl::flat_hash_set)
-add_executable(detection_oracle_test detection_oracle_test.cpp)
-target_link_libraries(detection_oracle_test PRIVATE gtest_main detection_oracle)
