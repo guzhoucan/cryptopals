@@ -86,8 +86,8 @@ TEST(EcbCutAndPaste, ConstructAdmin) {
   std::string admin_block =
       oracle.GetProfile(pad + admin_padded).substr(16, 16);
   // The attacker's email needs to be 10 (or 10 + 16n :P if you like) bytes
-  // like "hacker123."
-  std::string email_block = oracle.GetProfile("hacker123.").substr(0, 16);
+  // like "foo@gmail."
+  std::string email_block = oracle.GetProfile("foo@gmail.").substr(0, 16);
   std::string constructed_ciphertext = email_block + role_block + admin_block;
   EXPECT_EQ("admin", oracle.ParseRole(constructed_ciphertext));
 }
