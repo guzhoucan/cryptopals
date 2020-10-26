@@ -25,3 +25,8 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/unknown_str.txt
 add_executable(ecb_decryption ecb_decryption.cpp)
 target_link_libraries(ecb_decryption PRIVATE gtest_main absl::strings aes
         padding rand_util)
+
+# Challenge 13
+add_executable(ecb_cut_and_paste ecb_cut_and_paste.cpp)
+target_link_libraries(ecb_cut_and_paste PRIVATE gtest_main absl::strings aes
+        padding rand_util)
